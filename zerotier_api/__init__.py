@@ -48,16 +48,24 @@ class ZeroTier(object):
                     'http://{}/{}'.format(self.url, endpoint),
                     headers=self.headers)
 
-            _LOGGER.debug(
-                "Response status: %s", response.status)
+            _LOGGER.debug("Response status: %s", response.status)
             self.data = await response.json()
             _LOGGER.debug(self.data)
         except (asyncio.TimeoutError, aiohttp.ClientError):
             _LOGGER.error("Can not load data from ZeroTier controller")
             raise exceptions.ZeroTierConnectionError()
 
+    async def set_value(self, key, variable, endpoint):
+        """Send a POST request toa controller."""
+        payload = {key: variable}
+        print(payload)
+        try:
+            with async_timeout.timeout(5, loop=self._loop):
+                response = await self._session.post(
+                    'http://{}/{}'.format(self.url, endpoint),
+                    headers=self.headers, data=payload)
 
-
-
-
-
+            _LOGGER.debug("Response status: %s", response.status)
+        except (asyncio.TimeoutError, aiohttp.ClientError):
+            _LOGGER.error("Can not update entry of ZeroTier controller")
+            raise exceptions.ZeroTierConnectionError()
