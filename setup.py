@@ -10,8 +10,8 @@ except ImportError:
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
+with open(os.path.join(here, 'README.md'), encoding='utf-8') as readme_file:
+    long_description = readme_file.read()
 
 if sys.argv[-1] == 'publish':
     os.system('python3 setup.py sdist upload')
@@ -22,6 +22,7 @@ setup(
     version='0.1.0',
     description='Python API for interacting with luftdaten.info.',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     url='https://github.com/fabaff/zerotier-client',
     download_url='https://github.com/fabaff/zerotier-client/releases',
     author='Fabian Affolter',
